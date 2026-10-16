@@ -1,8 +1,22 @@
-import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
+import GObject from 'gi://GObject';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+
+const MynaIndicator = GObject.registerClass(
+class MynaIndicator extends PanelMenu.Button {
+    _init() {
+        super._init(0.0, 'Myna Quick Note');
+
+        let icon = new St.Icon({
+            icon_name: 'text-editor-symbolic',
+            style_class: 'system-status-icon',
+        });
+        this.add_child(icon);
+    }
+});
 
 /**
  * Основной класс расширения Myna Quick Note.
@@ -14,14 +28,8 @@ export default class MynaQuickNoteExtension extends Extension {
     enable() {
         console.log(`[${this.metadata.name}] Расширение активировано`);
 
-        // 1. Создаем кнопку на панели
-        this._indicator = new PanelMenu.Button(0.0, this.metadata.name, false);
-        
-        let icon = new St.Icon({
-            icon_name: 'text-editor-symbolic',
-            style_class: 'system-status-icon',
-        });
-        this._indicator.add_child(icon);
+        // 1. Создаем индикатор на панели
+        this._indicator = new MynaIndicator();
 
         // 2. Создаем контейнер диалога
         this._dialog = new St.BoxLayout({
@@ -90,8 +98,8 @@ export default class MynaQuickNoteExtension extends Extension {
             }
         });
 
-        // Добавляем кнопку на верхнюю панель
-        Main.panel.addToStatusArea(this.metadata.uuid, this._indicator);
+        // Добавляем индикатор на верхнюю панель
+        Main.panel.addToStatusArea(this.uuid, this._indicator);
     }
 
     _openDialog() {
