@@ -1,0 +1,11 @@
+{
+  "uuid": "myna-quick-note@diserere.github.com",
+  "name": "Myna Quick Note",
+  "description": "Быстрый редактор заметок и текста для технологии распознавания речи Myna",
+  "shell-version": [
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/diserere/myna-quick-note"
+}
